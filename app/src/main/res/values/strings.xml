@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Profile List App</string>
+    <string name="items_show_success">Showing items</string>
+    <string name="items_show_error">Unable to load new items</string>
+    <string name="image_content_description">image</string>
+    <string name="name">%s - %s</string>
+    <string name="timezone">%s / %s</string>
+    <string name="team">Team: %s</string>
+</resources>
