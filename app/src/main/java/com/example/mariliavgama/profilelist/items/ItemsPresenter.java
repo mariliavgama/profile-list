@@ -36,7 +36,7 @@ public class ItemsPresenter implements ItemsContract.Presenter {
     private ItemsContract.View mItemsView;
     static WeakReference<ItemsPresenter> wrPresenter;
 
-    ItemsPresenter(@NonNull ItemsRepository itemsRepository, @NonNull ItemsContract.View itemsView) {
+    public ItemsPresenter(@NonNull ItemsRepository itemsRepository, @NonNull ItemsContract.View itemsView) {
         mItemsRepository = itemsRepository;
         mItemsView = itemsView;
         mItemsView.setPresenter(this);
@@ -48,7 +48,7 @@ public class ItemsPresenter implements ItemsContract.Presenter {
         loadItems();
     }
 
-    void loadItems() {
+    public void loadItems() {
         mItemsRepository.getItems(new ItemsDataSource.LoadItemsCallback() {
             @Override
             public void onItemsLoaded(List<Item> items) {
