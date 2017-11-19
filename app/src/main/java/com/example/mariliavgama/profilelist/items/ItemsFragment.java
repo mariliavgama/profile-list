@@ -3,6 +3,7 @@ package com.example.mariliavgama.profilelist.items;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -199,6 +200,9 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             name.setText(LayoutUtils.formatText(item.getRealName(), item.getName(),
                     context.getString(R.string.name)));
 
+            if (item.getColor() != null) {
+                name.setTextColor(Color.parseColor("#" + item.getColor()));
+            }
             team.setText(String.format(context.getString(R.string.team), item.getTeam()));
 
             timezone.setText(LayoutUtils.formatText(item.getTz(), item.getTzLabel(),
