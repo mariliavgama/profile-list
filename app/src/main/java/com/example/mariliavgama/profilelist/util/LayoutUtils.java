@@ -1,11 +1,7 @@
 package com.example.mariliavgama.profilelist.util;
 
 import android.content.res.Resources;
-import android.graphics.Point;
-import android.os.Build;
-import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.Display;
 
 /**
  * Utility class for layout interactions

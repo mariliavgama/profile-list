@@ -10,9 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -37,6 +35,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
     private ItemsContract.Presenter mPresenter;
     private ItemsAdapter mListAdapter;
+    private ItemsActivity mWeakReferenceActivity;
 
     public ItemsFragment() {
         // Requires empty public constructor
@@ -66,7 +65,11 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     public void showItemDetailsUi(Item item) {
         // in it's own Activity, since it makes more sense that way and it gives us the flexibility
         // to show some Intent stubbing.
-        Intent intent = new Intent(getContext(), ItemDetailActivity.class);
+
+        if (mWeakReferenceActivity == null) {
+            return;
+        }
+        Intent intent = new Intent(mWeakReferenceActivity, ItemDetailActivity.class);
         intent.putExtra(ItemDetailActivity.EXTRA_IMAGE_ID, item.getImage());
         intent.putExtra(ItemDetailActivity.EXTRA_FULL_NAME_ID, item.getRealNameNormalized());
         intent.putExtra(ItemDetailActivity.EXTRA_NAME_ID, item.getName());
@@ -84,12 +87,12 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         // Set up items view
         RecyclerView recyclerView = root.findViewById(R.id.items_list);
         // only retain a weak reference to the activity
-        ItemsActivity activity = ItemsActivity.wrActivity.get();
-        if (activity == null) {
+        mWeakReferenceActivity = ItemsActivity.wrActivity.get();
+        if (mWeakReferenceActivity == null) {
             return null;
         }
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(activity));
+        recyclerView.setLayoutManager(new LinearLayoutManager(mWeakReferenceActivity));
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(mWeakReferenceActivity));
         recyclerView.setAdapter(mListAdapter);
 
         return root;
@@ -98,20 +101,21 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     @Override
     public void showItems(List<Item> items) {
         mListAdapter.replaceData(items);
+        /*
         Context context = getContext();
         if (context == null) {
             return;
         }
-        //Toast.makeText(context, R.string.items_show_success, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, R.string.items_show_success, Toast.LENGTH_SHORT).show();
+        */
     }
 
     @Override
     public void showLoadingItemsError() {
-        Context context = getContext();
-        if (context == null) {
+        if (mWeakReferenceActivity == null) {
             return;
         }
-        Toast.makeText(context, R.string.items_show_error, Toast.LENGTH_SHORT).show();
+        Toast.makeText(mWeakReferenceActivity, R.string.items_show_error, Toast.LENGTH_SHORT).show();
     }
 
     /**
