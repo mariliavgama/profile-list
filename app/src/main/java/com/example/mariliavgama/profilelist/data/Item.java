@@ -32,7 +32,6 @@ public final class Item {
     @ColumnInfo(name = "tz_label")
     private final String mTzLabel;
 
-
     @Nullable
     @ColumnInfo(name = "image")
     private final String mImage;
@@ -53,6 +52,10 @@ public final class Item {
     @ColumnInfo(name = "phone")
     private final String mPhone;
 
+    @Nullable
+    @ColumnInfo(name = "color")
+    private final String mColor;
+
    /**
      * Use this constructor to create a new Item.
      *
@@ -65,12 +68,13 @@ public final class Item {
      * @param realNameNormalized    real name to display in profile picture
      * @param title                 title
      * @param team                  team
-     * @param phone                  phone
+     * @param phone                 phone
+     * @param color                 color
      */
     public Item(@NonNull String id, @Nullable String realName, @Nullable String name,
                 @Nullable String tz, @Nullable String tzLabel, @Nullable String image,
                 @Nullable String realNameNormalized, @Nullable String title,
-                @Nullable String team, @Nullable String phone) {
+                @Nullable String team, @Nullable String phone, @Nullable String color) {
         mId = id;
         mRealName = realName;
         mName = name;
@@ -81,6 +85,7 @@ public final class Item {
         mTitle = title;
         mTeam = team;
         mPhone = phone;
+        mColor = color;
     }
 
     @NonNull
@@ -131,6 +136,11 @@ public final class Item {
     @Nullable
     public String getPhone() {
         return mPhone;
+    }
+
+    @Nullable
+    public String getColor() {
+        return mColor;
     }
 
     @Override

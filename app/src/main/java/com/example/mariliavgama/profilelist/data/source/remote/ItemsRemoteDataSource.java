@@ -41,9 +41,9 @@ public class ItemsRemoteDataSource implements ItemsDataSource {
 
     private static void addItem(String id, String realName, String name, String tz, String tzLabel,
                                 String image, String realNameNormalized, String title, String team,
-                                String phone) {
+                                String phone, String color) {
         Item newItem = new Item(id, realName, name, tz, tzLabel, image, realNameNormalized, title,
-                                team, phone);
+                                team, phone, color);
         ITEMS_SERVICE_DATA.put(newItem.getId(), newItem);
     }
 
@@ -72,7 +72,7 @@ public class ItemsRemoteDataSource implements ItemsDataSource {
                             addItem(m.getId(), m.getRealName(), m.getName(),
                                     m.getTz(), m.getTzLabel(), p.getImage192(),
                                     p.getRealNameNormalized(), p.getTitle(),
-                                    p.getTeam(), p.getPhone());
+                                    p.getTeam(), p.getPhone(), m.getColor());
                         }
                     }
                     items.addAll(ITEMS_SERVICE_DATA.values());

@@ -129,7 +129,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
         ItemsAdapter(List<Item> items, ItemClickListener itemClickListener) {
             setList(items);
-            mItemClickListener = itemClickListener;
+            setItemOnClickListener(itemClickListener);
         }
 
         void replaceData(List<Item> items) {
@@ -139,6 +139,10 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
         private void setList(@NonNull List<Item> items) {
             mItems = items;
+        }
+
+        private void setItemOnClickListener(ItemClickListener itemClickListener) {
+            mItemClickListener = itemClickListener;
         }
 
         @Override

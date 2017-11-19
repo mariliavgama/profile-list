@@ -1,36 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center_horizontal">
+    android:gravity="center_horizontal"
+    android:padding="@dimen/profile_margin_bigger">
     <ImageView
         android:id="@+id/details_image"
-        android:layout_width="@dimen/image_size_big"
-        android:layout_height="@dimen/image_size_big"
+        android:layout_width="@dimen/image_size_medium"
+        android:layout_height="@dimen/image_size_medium"
         android:scaleType="centerCrop"
-        android:layout_marginTop="@dimen/profile_margin_big"
         android:contentDescription="@string/image_content_description"/>
     <TextView
         android:id="@+id/details_full_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/list_item_margin_big"
+        android:layout_marginTop="@dimen/profile_margin_top"
+        android:layout_toRightOf="@+id/details_image"
+        android:layout_toEndOf="@+id/details_image"
         android:textSize="@dimen/font_size_big"
-        android:textAlignment="center"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textAlignment="center" />
     <TextView
         android:id="@+id/details_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/list_item_margin_big"
+        android:layout_below="@id/details_full_name"
+        android:layout_toRightOf="@+id/details_image"
+        android:layout_toEndOf="@+id/details_image"
         android:textSize="@dimen/font_size_big"
+        android:textStyle="bold"
         android:textAlignment="center"/>
     <TextView
         android:id="@+id/details_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/list_item_margin_big"
+        android:layout_below="@id/details_name"
+        android:layout_toRightOf="@+id/details_image"
+        android:layout_toEndOf="@+id/details_image"
         android:textColor="@android:color/darker_gray"
         android:textSize="@dimen/font_size_big"
         android:textAlignment="center"/>
@@ -39,7 +48,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/list_item_margin_big"
+        android:layout_below="@id/details_title"
+        android:layout_toRightOf="@+id/details_image"
+        android:layout_toEndOf="@+id/details_image"
         android:textColor="@android:color/darker_gray"
         android:textSize="@dimen/font_size_big"
         android:textAlignment="center"/>
-</LinearLayout>
+</RelativeLayout>

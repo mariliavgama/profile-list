@@ -1,18 +1,23 @@
 package com.example.mariliavgama.profilelist.details;
 
+import android.graphics.Point;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mariliavgama.profilelist.R;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -83,7 +88,6 @@ public class ItemDetailFragment extends Fragment implements ItemDetailContract.V
     @Override
     public void showDetails(@NonNull String image, @NonNull String fullName, @NonNull String name,
                             @NonNull String title, @NonNull String phone) {
-
         ImageLoader.getInstance().displayImage(image, mImage);
 
         mFullName.setText(fullName);
