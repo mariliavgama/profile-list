@@ -27,6 +27,7 @@ dependencies {
     androidTestImplementation "com.android.support.test:runner:$rootProject.testRunnerVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjavaVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
+    compile "com.google.guava:guava:$rootProject.guavaVersion"
 
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:design:$rootProject.supportLibraryVersion"

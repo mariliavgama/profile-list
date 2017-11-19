@@ -15,7 +15,13 @@ public class LayoutUtils {
      * @return value in pixels
      */
     public static int DPToPixels(float valueInDP) {
-
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valueInDP, Resources.getSystem().getDisplayMetrics());
+    }
+
+    public static String formatText(String s1, String s2, String format) {
+        if ("".equals(s1) || "".equals(s2)) {
+            return s1 + s2;
+        }
+        return  String.format(format,s1, s2);
     }
 }

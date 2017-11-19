@@ -1,6 +1,7 @@
 package com.example.mariliavgama.profilelist.items;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -9,7 +10,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,6 +21,8 @@ import android.widget.Toast;
 
 import com.example.mariliavgama.profilelist.R;
 import com.example.mariliavgama.profilelist.data.Item;
+import com.example.mariliavgama.profilelist.details.ItemDetailActivity;
+import com.example.mariliavgama.profilelist.util.LayoutUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -43,7 +48,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mListAdapter = new ItemsAdapter(new ArrayList<Item>(0));
+        mListAdapter = new ItemsAdapter(new ArrayList<Item>(0), mItemListener);
     }
 
     @Override
@@ -55,6 +60,19 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     @Override
     public void setPresenter(@NonNull ItemsContract.Presenter presenter) {
         mPresenter = presenter;
+    }
+
+    @Override
+    public void showItemDetailsUi(Item item) {
+        // in it's own Activity, since it makes more sense that way and it gives us the flexibility
+        // to show some Intent stubbing.
+        Intent intent = new Intent(getContext(), ItemDetailActivity.class);
+        intent.putExtra(ItemDetailActivity.EXTRA_IMAGE_ID, item.getImage());
+        intent.putExtra(ItemDetailActivity.EXTRA_FULL_NAME_ID, item.getRealNameNormalized());
+        intent.putExtra(ItemDetailActivity.EXTRA_NAME_ID, item.getName());
+        intent.putExtra(ItemDetailActivity.EXTRA_TITLE_ID, item.getTitle());
+        intent.putExtra(ItemDetailActivity.EXTRA_PHONE_ID, item.getPhone());
+        startActivity(intent);
     }
 
     @Nullable
@@ -73,6 +91,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(activity));
         recyclerView.setAdapter(mListAdapter);
+
         return root;
     }
 
@@ -83,7 +102,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         if (context == null) {
             return;
         }
-        Toast.makeText(context, R.string.items_show_success, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, R.string.items_show_success, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -95,11 +114,22 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         Toast.makeText(context, R.string.items_show_error, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Listener for clicks on items in the ListView.
+     */
+    ItemClickListener mItemListener = new ItemClickListener() {
+        public void onItemClick(Item item) {
+            mPresenter.openItemDetails(item);
+        }
+    };
+
     static class ItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private List<Item> mItems;
+        private ItemClickListener mItemClickListener;
 
-        ItemsAdapter(List<Item> items) {
+        ItemsAdapter(List<Item> items, ItemClickListener itemClickListener) {
             setList(items);
+            mItemClickListener = itemClickListener;
         }
 
         void replaceData(List<Item> items) {
@@ -120,7 +150,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         //
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            ((ItemViewHolder) holder).bindData(mItems.get(position));
+            ((ItemViewHolder) holder).bindData(mItems.get(position), mItemClickListener);
         }
 
         @Override
@@ -150,7 +180,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             timezone = itemView.findViewById(R.id.item_timezone);
         }
 
-        void bindData(final Item item) {
+        void bindData(final Item item, final ItemClickListener onClickListener) {
             image.setContentDescription(item.getRealName());
             // Default options set on Activity onCreate will be used in all calls to displayImage
             ImageLoader.getInstance().displayImage(item.getImage(), image);
@@ -158,21 +188,21 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             if (context == null) {
                 return;
             }
-            name.setText(formatText(item.getRealName(), item.getName(),
+            name.setText(LayoutUtils.formatText(item.getRealName(), item.getName(),
                     context.getString(R.string.name)));
 
             team.setText(String.format(context.getString(R.string.team), item.getTeam()));
 
-            timezone.setText(formatText(item.getTz(), item.getTzLabel(),
+            timezone.setText(LayoutUtils.formatText(item.getTz(), item.getTzLabel(),
                     context.getString(R.string.timezone)));
-        }
-    }
 
-    private static String formatText(String s1, String s2, String format) {
-        if ("".equals(s1) || "".equals(s2)) {
-            return s1 + s2;
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onClickListener.onItemClick(item);
+                }
+            });
         }
-        return  String.format(format,s1, s2);
     }
 
     public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
@@ -200,5 +230,9 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 mDivider.draw(c);
             }
         }
+    }
+
+    public interface ItemClickListener {
+        void onItemClick(Item item);
     }
 }

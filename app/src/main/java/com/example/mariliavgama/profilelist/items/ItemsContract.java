@@ -17,10 +17,12 @@ public interface ItemsContract {
         void showItems(List<Item> items);
 
         void showLoadingItemsError();
+
+        void showItemDetailsUi(Item item);
     }
 
     interface Presenter extends BasePresenter {
-        void scheduleRefreshItems();
+        void openItemDetails(Item item);
 
         void refreshItems();
 

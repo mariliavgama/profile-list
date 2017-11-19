@@ -18,5 +18,6 @@ package="com.example.mariliavgama.profilelist">
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
     </activity>
+    <activity android:name="com.example.mariliavgama.profilelist.details.ItemDetailActivity" />
 </application>
 </manifest>

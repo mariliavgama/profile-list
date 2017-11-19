@@ -36,6 +36,7 @@ ext {
     buildToolsVersion = '26.0.2'
 
     // App dependencies
+    guavaVersion = '18.0'
     testRunnerVersion = '1.0.1'
     supportLibraryVersion = '26.1.0'
     junitVersion = '4.12'

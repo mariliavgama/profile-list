@@ -18,6 +18,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Architecture style based on: https://github.com/googlesamples/android-architecture
  * This is a presenter which implements the presenter interface in the corresponding contract.
@@ -88,45 +90,17 @@ public class ItemsPresenter implements ItemsContract.Presenter {
     }
 
     @Override
-    public void takeView(ItemsContract.View view) {
-        this.mItemsView = view;
-        loadItems();
+    public void openItemDetails(@NonNull Item item) {
+        checkNotNull(item, "item cannot be null!");
+        if (mItemsView == null) {
+            return;
+        }
+        mItemsView.showItemDetailsUi(item);
     }
 
     @Override
-    public void scheduleRefreshItems() {
-        getObservable()
-                // Run on a background thread
-                .subscribeOn(Schedulers.io())
-                // Be notified on the main thread
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(getObserver());
-    }
-
-    private Observable<? extends Long> getObservable() {
-        int secondsToLoadItems = 1;
-        return Observable.timer(secondsToLoadItems, TimeUnit.SECONDS);
-    }
-
-    private Observer<Long> getObserver() {
-        return new Observer<Long>() {
-
-            @Override
-            public void onSubscribe(Disposable d) {
-            }
-
-            @Override
-            public void onNext(Long value) {
-            }
-
-            @Override
-            public void onError(Throwable e) {
-            }
-
-            @Override
-            public void onComplete() {
-                refreshItems();
-            }
-        };
+    public void takeView(ItemsContract.View view) {
+        this.mItemsView = view;
+        loadItems();
     }
 }

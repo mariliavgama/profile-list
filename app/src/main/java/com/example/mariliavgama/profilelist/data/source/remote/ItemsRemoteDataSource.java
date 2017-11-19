@@ -68,10 +68,12 @@ public class ItemsRemoteDataSource implements ItemsDataSource {
                     for (int i = 0; i < results.size(); i++) {
                         Member m = results.get(i);
                         Profile p = m.getProfile();
-                        addItem(validate(m.getId()), validate(m.getRealName()), validate(m.getName()),
-                                validate(m.getTz()), validate(m.getTzLabel()), validate(p.getImage192()),
-                                validate(p.getRealNameNormalized()), validate(p.getTitle()),
-                                validate(p.getTeam()), validate(p.getPhone()));
+                        if (p != null) {
+                            addItem(m.getId(), m.getRealName(), m.getName(),
+                                    m.getTz(), m.getTzLabel(), p.getImage192(),
+                                    p.getRealNameNormalized(), p.getTitle(),
+                                    p.getTeam(), p.getPhone());
+                        }
                     }
                     items.addAll(ITEMS_SERVICE_DATA.values());
                     callback.onItemsLoaded(items);
@@ -83,13 +85,6 @@ public class ItemsRemoteDataSource implements ItemsDataSource {
                 callback.onDataNotAvailable();
             }
         });
-    }
-
-    private String validate(String s) {
-        if (s == null) {
-            return "";
-        }
-        return s;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.example.mariliavgama.profilelist.items;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -10,6 +11,7 @@ import com.example.mariliavgama.profilelist.data.source.ItemsRepository;
 import com.example.mariliavgama.profilelist.data.source.local.ItemsLocalDataSource;
 import com.example.mariliavgama.profilelist.data.source.local.ListAppDatabase;
 import com.example.mariliavgama.profilelist.data.source.remote.ItemsRemoteDataSource;
+import com.example.mariliavgama.profilelist.util.ActivityUtils;
 import com.example.mariliavgama.profilelist.util.AppExecutors;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -56,14 +58,20 @@ public class ItemsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setHomeAsUpIndicator(R.drawable.ic_menu);
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+
         ItemsFragment itemsFragment =
                 (ItemsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+
         if (itemsFragment == null) {
             // Create the fragment
             itemsFragment = ItemsFragment.newInstance();
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.contentFrame, itemsFragment);
-            transaction.commit();
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
+                    itemsFragment, R.id.contentFrame);
         }
 
         // TODO: Use dependency injection instead of creating a new instance of repository
